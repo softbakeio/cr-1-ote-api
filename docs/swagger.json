@@ -1,0 +1,111 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a OTE electricity data API server which provide 24 hours electricity data",
+        "title": "Swagger OTE electricity data API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {},
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/ote/electricity": {
+            "get": {
+                "description": "Get current electricity OTE data",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get current electricity OTE data",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.ElectricityHourData"
+                        }
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/ote/electricity/evaluate": {
+            "post": {
+                "description": "Evaluate user electricity value with the current OTE",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Evaluate user electricity value with the current OTE",
+                "parameters": [
+                    {
+                        "description": "Evaluate user electricity input",
+                        "name": "value",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.ElectricityValue"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.ElectricityValueResponse"
+                        }
+                    },
+                    "400": {
+                        "description": ""
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.ElectricityHourData": {
+            "type": "object",
+            "properties": {
+                "avg": {
+                    "type": "number"
+                },
+                "max": {
+                    "type": "number"
+                },
+                "min": {
+                    "type": "number"
+                },
+                "time": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "number"
+                }
+            }
+        },
+        "main.ElectricityValue": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "number"
+                }
+            }
+        },
+        "main.ElectricityValueResponse": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}
