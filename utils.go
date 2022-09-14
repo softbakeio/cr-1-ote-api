@@ -46,3 +46,43 @@ func Avg(array []float64) float64 {
 	// avg to find the average
 	return  sum / float64(len(array))
 }
+
+//EvaluateElectricityData evaluate eletricity value with the OTE electricity hour data
+// if the value is in interval of min max or is less or bigger then current hour value
+func EvaluateElectricityData(electricityValue *ElectricityValue, electricityHourData *ElectricityHourData ) bool {
+
+	// first check if the value is less then the minimal value from 24 hours interval
+	if electricityValue.Value < electricityHourData.Min {
+		return true
+	}
+
+	// else check if the value is bigger then the max value then return false
+	if electricityValue.Value > electricityHourData.Max {
+		return false
+	}
+
+	// check with the current hour value less then return true if
+	// bigger then return false
+	if electricityValue.Value < electricityHourData.Value {
+		return true
+	} else {
+		return false
+	}
+}
+
+// CreateElectricityHourData create new struct of ElectricityHourData
+// with the data
+func CreateElectricityHourData(data []float64) *ElectricityHourData {
+	min, max := MinMax(data)
+	avg := Avg(data)
+	currentTimestamp := GetCurrentTimestamp()
+	value := data[time.Now().Hour()]
+
+	return &ElectricityHourData{
+		Time: currentTimestamp,
+		Avg: avg,
+		Max: max,
+		Min: min,
+		Value: value,
+	}
+}
