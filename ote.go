@@ -55,18 +55,21 @@ func (oa *OteApi) EvaluateElectricityValue() http.Handler {
 
 		if r.Method != "POST" {
 			http.Error(w, "only POST is supported", http.StatusBadRequest)
+			return
 		}
 
 		err := json.NewDecoder(r.Body).Decode(&electricityValue)
 
 		if err != nil {
 			http.Error(w, fmt.Sprintf("error read electricity value: %s", err.Error()), http.StatusBadRequest)
+			return
 		}
 
 		result, err := oa.newElectricityDataService.GetElectricityHourData()
 
 		if err != nil {
 			http.Error(w, fmt.Sprintf("error get ote electricity data: %s", err.Error()), http.StatusInternalServerError)
+			return
 		}
 
 		eval := EvaluateElectricityData(electricityValue, result)
@@ -75,6 +78,7 @@ func (oa *OteApi) EvaluateElectricityValue() http.Handler {
 
 		if err != nil {
 			http.Error(w, fmt.Sprintf("error encode json ote electricity value response: %s", err.Error()), http.StatusInternalServerError)
+			return
 		}
 	})
 }
@@ -85,6 +89,7 @@ func (oa *OteApi) GetElectricityOteData() http.Handler {
 
 		if r.Method != "GET" {
 			http.Error(w, "only GET is supported", http.StatusBadRequest)
+			return
 		}
 
 		oa.SetupApiHeaders(w)
@@ -92,12 +97,14 @@ func (oa *OteApi) GetElectricityOteData() http.Handler {
 
 		if err != nil {
 			http.Error(w, fmt.Sprintf("error get ote electricity data: %s", err.Error()), http.StatusInternalServerError)
+			return
 		}
 
 		err = json.NewEncoder(w).Encode(res)
 
 		if err != nil {
 			http.Error(w, fmt.Sprintf("error encode json ote electricity data: %s", err.Error()), http.StatusInternalServerError)
+			return
 		}
 	})
 }
