@@ -1,0 +1,73 @@
+definitions:
+  main.ElectricityHourData:
+    properties:
+      avg:
+        type: number
+      max:
+        type: number
+      min:
+        type: number
+      time:
+        type: string
+      value:
+        type: number
+    type: object
+  main.ElectricityValue:
+    properties:
+      value:
+        type: number
+    type: object
+  main.ElectricityValueResponse:
+    properties:
+      value:
+        type: boolean
+    type: object
+info:
+  contact: {}
+  description: This is a OTE electricity data API server which provide 24 hours electricity
+    data
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger OTE electricity data API
+  version: "1.0"
+paths:
+  /ote/electricity:
+    get:
+      description: Get current electricity OTE data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.ElectricityHourData'
+        "500":
+          description: ""
+      summary: Get current electricity OTE data
+  /ote/electricity/evaluate:
+    post:
+      consumes:
+      - application/json
+      description: Evaluate user electricity value with the current OTE
+      parameters:
+      - description: Evaluate user electricity input
+        in: body
+        name: value
+        required: true
+        schema:
+          $ref: '#/definitions/main.ElectricityValue'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.ElectricityValueResponse'
+        "400":
+          description: ""
+        "500":
+          description: ""
+      summary: Evaluate user electricity value with the current OTE
+swagger: "2.0"
